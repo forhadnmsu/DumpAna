@@ -1,16 +1,28 @@
 # include "TGraphErrors.h"
 # include "TF1.h"
 # include "TLegend.h"
-#include "../ana_const.h"
+#include "ana_const.h"
 void dnpPlot(){
 	gROOT->ForceStyle();
+	gROOT->SetStyle("BELLE2");
+	//gStyle->SetLabelFont(32,"xy");
+	 gStyle->SetTitleSize(0.07,"x");
+	 gStyle->SetTitleSize(0.09,"y");
 	//gStyle->SetTitleFontSize(0.1);
+
+	 gStyle->SetLabelSize(0.08,"Y");
+	 gStyle->SetLabelSize(0.08,"X");
+/*
 	gStyle->SetTitleSize(0.05);
 	gStyle->SetLabelSize(0.07,"Y");
 	gStyle->SetLabelSize(0.07,"X");
 	gStyle->SetEndErrorSize(3);
 	gStyle->SetErrorX(1.);
 	gStyle->SetMarkerSize(1.5);
+
+*/
+	gStyle->SetTitleOffset(0.7,"Y");
+
 	//gStyle->SetTitleW(0.6);  //per cent of the pad width
 	//gStyle->SetTitleH(0.08); //per cent of the pad height
 	ostringstream oss;
@@ -105,9 +117,9 @@ void dnpPlot(){
         float PT_E906 [N_E906] = { 0.25, 0.75, 1.25, 1.75 };
         float PT_E906E[N_E906] = {x_sea,x_sea,x_sea,x_sea};
         float XERROR_E906 [N_E906] = {x_sea_e,x_sea_e,x_sea_e,x_sea_e};
-        float LAMBDA_ERR_E906 [N_E906] = {0.17,0.13,0.16,0.24};
-        float MU_ERR_E906[N_E906] = {0.03,0.04,0.04,0.05};
-        float NU_ERR_E906[N_E906] = { 0.041, 0.030, 0.042, 0.061 };
+        float LAMBDA_ERR_E906 [N_E906] = {0.101,0.156,0.152,0.356};
+        float MU_ERR_E906[N_E906] = {0.0217,0.007,0.07,0.068};
+        float NU_ERR_E906[N_E906] = { 0.010,0.007,0.033,0.0356};
 	//Adding graphs
 	auto gr_e906_lambda = new TGraphErrors(4,PT_E906, XERROR_E906,PT_E906E,LAMBDA_ERR_E906);
 	auto gr_e906_mu = new TGraphErrors(4,PT_E906,XERROR_E906,PT_E906E,MU_ERR_E906);
@@ -125,7 +137,7 @@ void dnpPlot(){
 	gr_na10_mu->SetName("gr_na10_mu");
 
 	TCanvas * c = new TCanvas("c", "c",800,1000);
-	c->Divide(1,3,0,0);
+	c->Divide(1,3);
 	c->cd(1);
 	gr_na10_lambda->SetMarkerStyle(20);
 	gr_na10_lambda->SetMarkerColor(kRed);
@@ -141,10 +153,10 @@ void dnpPlot(){
 	mg1->Add(gr_e615_lambda);
 	mg1->Add(gr_e906_lambda);
 	mg1->Draw("AP");
-	auto leg = new TLegend(0.1,1.0,0.48,0.85);
+	auto leg = new TLegend(0.55,1.00,0.98,0.75);
 	leg->AddEntry("gr_e615_lambda","E615 (#pi^{-} + W) @252GeV","p");
 	leg->AddEntry("gr_na10_lambda","NA10 (#pi^{-} + W) @140GeV" ,"p");
-	leg->AddEntry("gr_e906_lambda","E906 (p + dump) @120GeV","p");
+	leg->AddEntry("gr_e906_lambda","E906 (p + dump) @120GeV (exp. Accuracy)","p");
 	leg->AddEntry("gr_e866PD_lambda","E866 (p + d) @800GeV","p");
 	leg ->Draw();
 	c->cd(2);
@@ -168,6 +180,21 @@ void dnpPlot(){
 	mg2->Draw("AP");
 
 	c->cd(3);
+
+/*
+	auto leg = new TLegend(0.15,1.0,0.48,0.75);
+
+	gr_e615_nu->SetName("gr_e615_nu");
+	gr_na10_nu->SetName("gr_na10_nu");
+	gr_e906_nu->SetName("gr_e906_nu");
+	gr_e866PD_nu->SetName("gr_e866PD_nu");
+
+        leg->AddEntry("gr_e615_nu","E615 (#pi^{-} + W) @252GeV","p");
+        leg->AddEntry("gr_na10_nu","NA10 (#pi^{-} + W) @140GeV" ,"p");
+        leg->AddEntry("gr_e906_nu","E906 (p + dump) @120GeV (exp. Accuracy)","p");
+        leg->AddEntry("gr_e866PD_nu","E866 (p + d) @800GeV","p");
+        leg ->Draw();
+*/
 	gr_na10_nu->SetMarkerColor(kRed);
 	gr_na10_nu->SetMarkerStyle(20);
 
@@ -186,6 +213,6 @@ void dnpPlot(){
 	mg3->Add(gr_e615_nu);
 	mg3->Add(gr_e906_nu);
 	mg3->Draw("AP");
-	c->SaveAs("plot/lambda.png");
+	c->SaveAs("plot/lambda.pdf");
 	return c;
 }
